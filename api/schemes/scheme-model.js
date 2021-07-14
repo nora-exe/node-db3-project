@@ -5,7 +5,7 @@ function find() { // EXERCISE A
       .leftJoin('steps as st', 'sc.scheme_id', 'st.scheme_id')
       .select('sc.*')
       .count('st.step_id as number_of_steps')
-      .orderBy('sc.scheme_id', 'asc')
+      .orderBy('scheme_id')
       .groupBy('sc.scheme_id')
 }
 
@@ -15,7 +15,7 @@ async function findById(scheme_id) { // EXERCISE B
       .where('sc.scheme_id', scheme_id)
       .select('st.*', 'sc.scheme_name', 'sc.scheme_id')
       .count('st.step_id as number_of_steps')
-      .orderBy('st.step_number', 'asc')
+      .orderBy('step_number')
 
   const result = {
     scheme_id: rows[0].scheme_id,
@@ -59,7 +59,7 @@ function addStep(scheme_id, step) { // EXERCISE E - add step to scheme, resolves
     scheme_id
   })
     .then(() => {
-      return db('steps')
+      return db('steps as st')
       .join('schemes as sc', 'sc.scheme_id', 'st.scheme_id')
       .select('step_id', 'step_number', 'instructions', 'scheme_name')
       .orderBy('step_number')
