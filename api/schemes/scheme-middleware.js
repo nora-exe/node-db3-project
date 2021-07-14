@@ -19,9 +19,9 @@ const checkSchemeId = async (req, res, next) => {
 }
 
 const validateScheme = (req, res, next) => {
-  const scheme_name = req.body
+  const { scheme_name } = req.body
   if (!scheme_name || !scheme_name.trim()) {
-    next ({
+    next({
       status: 400,
       message: 'invalid scheme_name'
     })
@@ -32,11 +32,9 @@ const validateScheme = (req, res, next) => {
 
 const validateStep = (req, res, next) => {
   const { instructions, step_number } = req.body
-  if (!instructions || !instructions.trim() || !isNaN(step_number) || step_number < 1) {
-    next({
-      status: 400,
-      message: 'invalid step'
-    })
+  if (!instructions || !instructions.trim() || typeof step_number !== 'number' || step_number < 1) {
+    const error = { status: 400, message: 'invalid step' }
+    next(error)
   } else {
     next()
   }
